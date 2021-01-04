@@ -23,6 +23,7 @@ interface IBaseProps {
   formHelperTextProps?: FormHelperTextProps;
   maxVisibleOptions?: number;
   showAll?: boolean;
+  noRemoveSelectionOption?: boolean;
 }
 
 interface IDefaultKeyValuePair extends IBaseProps {
@@ -37,7 +38,8 @@ interface ICustomKeyValuePair extends IBaseProps {
 
 export type SearchableSelectProps = (
   | IDefaultKeyValuePair
-  | ICustomKeyValuePair) &
+  | ICustomKeyValuePair
+) &
   SelectProps;
 
 interface IClickAwayListenerWrapperProps {
@@ -49,9 +51,7 @@ interface IClickAwayListenerWrapperProps {
 // This Component ignores those props
 // Additionally it has to be a React.Component instead of a functional component
 // Since functional components can't have a "ref"
-class SearchFieldWrapper extends React.Component<
-  IClickAwayListenerWrapperProps
-> {
+class SearchFieldWrapper extends React.Component<IClickAwayListenerWrapperProps> {
   render() {
     const { searchFieldPlaceholder, setQuery } = this.props;
 
@@ -61,10 +61,10 @@ class SearchFieldWrapper extends React.Component<
           <TextField
             fullWidth
             placeholder={searchFieldPlaceholder || "Search..."}
-            onChange={e => {
+            onChange={(e) => {
               setQuery(e.target.value);
             }}
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               // Prevent MUI-Autoselect while typing
               e.stopPropagation();
             }}
@@ -91,11 +91,12 @@ export function SearchableSelect(props: SearchableSelectProps) {
     formHelperTextProps,
     showAll,
     maxVisibleOptions,
+    noRemoveSelectionOption,
     ...others
   } = props;
 
   // Customprops
-  let { keyPropFn, valuePropFn } = props as (ICustomKeyValuePair & SelectProps);
+  let { keyPropFn, valuePropFn } = props as ICustomKeyValuePair & SelectProps;
 
   // Remove keyPropFn and valuePropFn to not get passed down to the select component
   delete (others as any).keyPropFn;
@@ -108,7 +109,7 @@ export function SearchableSelect(props: SearchableSelectProps) {
   }
 
   const defaultProps = {
-    style: { minWidth: "240px" }
+    style: { minWidth: "240px" },
   };
 
   function renderFilteredOptions() {
@@ -130,7 +131,7 @@ export function SearchableSelect(props: SearchableSelectProps) {
       filteredOptions = filteredOptions.slice(0, maxVisibleOptions || 20);
 
       const selectedOption = options.find(
-        option => value === keyPropFn(option)
+        (option) => value === keyPropFn(option)
       );
 
       if (selectedOption) {
@@ -169,8 +170,8 @@ export function SearchableSelect(props: SearchableSelectProps) {
           },
           disableAutoFocusItem: true,
           MenuListProps: {
-            disableListWrap: true
-          }
+            disableListWrap: true,
+          },
         }}
         {...others}
       >
@@ -178,7 +179,9 @@ export function SearchableSelect(props: SearchableSelectProps) {
           searchFieldPlaceholder={searchFieldPlaceholder}
           setQuery={setQuery}
         />
-        <MenuItem>{removeSelectionText || "Remove selection"}</MenuItem>
+        {!noRemoveSelectionOption && (
+          <MenuItem>{removeSelectionText || "Remove selection"}</MenuItem>
+        )}
         {renderFilteredOptions()}
       </Select>
       <FormHelperText error={error} {...formHelperTextProps}>

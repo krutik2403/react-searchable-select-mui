@@ -1,6 +1,6 @@
 {
-  "name": "@dccs/react-searchable-select-mui",
-  "version": "0.2.11",
+  "name": "react-searchable-select-mui",
+  "version": "0.1.0",
   "description": "Searchable Select MUI",
   "main": "lib/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DCCS-IT-Business-Solutions/react-searchable-select-mui.git"
+    "url": "git+https://github.com/krutik2403/react-searchable-select-mui.git"
   },
   "keywords": [
     "npm",
@@ -35,12 +35,12 @@
     "select",
     "mui"
   ],
-  "author": "Manuel Vitzthum",
+  "author": "Krutik Patel",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DCCS-IT-Business-Solutions/react-searchable-select-mui/issues"
+    "url": "https://github.com/krutik2403/react-searchable-select-mui/issues"
   },
-  "homepage": "https://github.com/DCCS-IT-Business-Solutions/react-searchable-select-mui#readme",
+  "homepage": "https://github.com/krutik2403/react-searchable-select-mui#readme",
   "dependencies": {
     "@dccs/utils": "0.2.1"
   },
